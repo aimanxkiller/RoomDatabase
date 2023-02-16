@@ -1,9 +1,12 @@
-package com.example.roomdatabase
+package com.example.roomdatabase.viewmodel
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.roomdatabase.AppDatabase
+import com.example.roomdatabase.model.Employee
+import com.example.roomdatabase.adapter.MyAdapter
 import com.example.roomdatabase.databinding.ActivityDisplayAllBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -11,7 +14,7 @@ import kotlinx.coroutines.launch
 
 class DisplayAllActivity : AppCompatActivity() {
 
-    private lateinit var appDb:AppDatabase
+    private lateinit var appDb: AppDatabase
     private lateinit var binding: ActivityDisplayAllBinding
     private lateinit var data:ArrayList<Employee>
 
@@ -26,11 +29,11 @@ class DisplayAllActivity : AppCompatActivity() {
 
     private fun getDatabase(){
         lifecycleScope.launch(Dispatchers.IO){
-            appDb=AppDatabase.getDatabase(this@DisplayAllActivity)
+            appDb= AppDatabase.getDatabase(this@DisplayAllActivity)
         }
     }
 
-    fun setViews(){
+    private fun setViews(){
         val recyclerView = binding.listView
         recyclerView.setHasFixedSize(true)
         val linerManager = LinearLayoutManager(this)

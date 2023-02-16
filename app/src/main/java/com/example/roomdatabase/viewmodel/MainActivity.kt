@@ -1,22 +1,20 @@
-package com.example.roomdatabase
+package com.example.roomdatabase.viewmodel
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import android.view.Display
 import android.widget.Toast
-import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.lifecycle.lifecycleScope
+import com.example.roomdatabase.AppDatabase
+import com.example.roomdatabase.model.Employee
 import com.example.roomdatabase.databinding.ActivityMainBinding
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-    private lateinit var appDb:AppDatabase
+    private lateinit var appDb: AppDatabase
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,8 +22,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         getDatabase()
-
         buttonSettings()
+
     }
 
     private fun buttonSettings(){
@@ -34,7 +32,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.mainButton2.setOnClickListener {
-            val intent = Intent(this,DisplayAllActivity::class.java)
+            val intent = Intent(this, DisplayAllActivity::class.java)
             startActivity(intent)
         }
 
@@ -57,7 +55,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun getDatabase(){
         lifecycleScope.launch(Dispatchers.IO){
-            appDb=AppDatabase.getDatabase(this@MainActivity)
+            appDb= AppDatabase.getDatabase(this@MainActivity)
             appDb.employeeDao().getAll()
         }
     }

@@ -1,4 +1,4 @@
-package com.example.roomdatabase
+package com.example.roomdatabase.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -6,6 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.roomdatabase.model.Employee
+import com.example.roomdatabase.R
 
 class MyAdapter(private val baseContext: Context, private val data: ArrayList<Employee>):RecyclerView.Adapter<MyAdapter.ViewHolder>() {
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

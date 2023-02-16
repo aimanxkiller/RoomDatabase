@@ -5,6 +5,7 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import com.example.roomdatabase.model.Employee
 
 @Dao
 interface EmployeeDao {
@@ -13,7 +14,7 @@ interface EmployeeDao {
     fun getAll():List<Employee>
 
     @Query("SELECT * FROM employee_table WHERE employeeId LIKE :empId LIMIT 1")
-    fun findById(empId:Int):Employee
+    fun findById(empId:Int): Employee
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insert(employee: Employee)
@@ -26,5 +27,8 @@ interface EmployeeDao {
 
     @Query("DELETE FROM employee_table")
     fun deleteAll()
+
+    @Query("UPDATE employee_table SET name = :name WHERE employeeId =:empId")
+    fun updateInfo(name:String,empId: Int)
 
 }
