@@ -21,9 +21,7 @@ class DisplayAllActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         getDatabase()
-
         setViews()
-
     }
 
     private fun getDatabase(){
@@ -39,12 +37,14 @@ class DisplayAllActivity : AppCompatActivity() {
         recyclerView.layoutManager = linerManager
 
         lifecycleScope.launch(Dispatchers.IO){
-            var datax = async {
+            val dataX = async {
                 return@async appDb.employeeDao().getAll()
             }
-            data = datax.await() as ArrayList<Employee>
-            val myAdapter = MyAdapter(baseContext,data)
-            recyclerView.adapter = myAdapter
+            data = dataX.await() as ArrayList<Employee>
+            recyclerView.apply {
+                val myAdapter = MyAdapter(baseContext,data)
+                adapter = myAdapter
+            }
         }
     }
 }
