@@ -7,6 +7,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.roomdatabase.adapter.RecyclerLiveViewAdapter
 import com.example.roomdatabase.databinding.ActivityMainBinding
@@ -33,11 +34,12 @@ class MainActivity : AppCompatActivity() {
         buttonSettings()
 
         binding.recyclerMain.apply {
-            layoutManager = LinearLayoutManager(this@MainActivity)
+            layoutManager = GridLayoutManager(this@MainActivity,3)
             recyclerViewAdapter = RecyclerLiveViewAdapter()
             adapter = recyclerViewAdapter
         }
 
+        ViewModelProvider.Factory
         viewModel = ViewModelProvider(this).get(UserViewModel::class.java)
 
         viewModel.getAllUsersObservers().observe(this) {
