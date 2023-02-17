@@ -6,10 +6,14 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.roomdatabase.adapter.RecyclerLiveViewAdapter
 import com.example.roomdatabase.databinding.ActivityMainBinding
 import com.example.roomdatabase.model.Employee
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
 
@@ -62,25 +66,36 @@ class MainActivity : AppCompatActivity() {
         val id = binding.editTextTextId.text.toString()
 
         if (name.isNotEmpty()&&department.isNotEmpty()&&id.isNotEmpty()){
-            val newData = Employee(null,name,department,id.toInt())
-            viewModel.insertUser(newData)
-            Toast.makeText(this@MainActivity,"New Data Added",Toast.LENGTH_SHORT).show()
-            binding.editTextName.text.clear()
-            binding.editTextDepartment.text.clear()
-            binding.editTextTextId.text.clear()
+            lifecycleScope.launch(Dispatchers.Main) {
+                val newData = Employee(null, name, department, id.toInt())
+                async {
+                    viewModel.insertUser(newData)
+                }
+                Toast.makeText(this@MainActivity, "New Data Added", Toast.LENGTH_SHORT).show()
+                binding.editTextName.text.clear()
+                binding.editTextDepartment.text.clear()
+                binding.editTextTextId.text.clear()
+            }
         }else{
             Toast.makeText(this@MainActivity,"Please Fill All Data",Toast.LENGTH_SHORT).show()
         }
     }
 
     private fun deleteLive(){
-        val id:Int = binding.textViewDelete.text.toString().toInt()
-        val toDelete = viewModel.getUserByID(id)
-        if(toDelete != null){
-            viewModel.deleteUser(toDelete)
-            Toast.makeText(this,"User found and deleted",Toast.LENGTH_SHORT).show()
+        val id = binding.textViewDelete.text.toString()
+
+        if (id.isNotEmpty()) {
+            lifecycleScope.launch(Dispatchers.Main) {
+                val toDelete = async { viewModel.getUserByID(id.toInt()) }
+                if (toDelete != null) {
+                    async { viewModel.deleteUser(toDelete.await()) }
+                    Toast.makeText(this@MainActivity, "User found and deleted", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(this@MainActivity, "No user found", Toast.LENGTH_SHORT).show()
+                }
+            }
         }else{
-            Toast.makeText(this,"No user found",Toast.LENGTH_SHORT).show()
+            Toast.makeText(this@MainActivity,"Please Insert User EmpID",Toast.LENGTH_SHORT).show()
         }
     }
 
