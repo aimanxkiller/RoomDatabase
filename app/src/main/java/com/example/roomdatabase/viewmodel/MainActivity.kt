@@ -39,6 +39,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         viewModel = ViewModelProvider(this).get(UserViewModel::class.java)
+
         viewModel.getAllUsersObservers().observe(this) {
             recyclerViewAdapter.setListData(ArrayList(it))
             recyclerViewAdapter.notifyDataSetChanged()
@@ -82,12 +83,11 @@ class MainActivity : AppCompatActivity() {
 
     private fun deleteLive(){
         val id = binding.textViewDelete.text.toString()
-
         if (id.isNotEmpty()) {
-            lifecycleScope.launch(Dispatchers.Main) {
-                val toDelete = async { viewModel.getUserByID(id.toInt()) }
-                if (toDelete != null) {
-                    async { viewModel.deleteUser(toDelete.await()) }
+            lifecycleScope.launch(Dispatchers.Main){
+                val toDelete = async{ viewModel.getUserByID(id.toInt()) }
+                if (toDelete.await() != null) {
+                    async {  viewModel.deleteUser(toDelete.await())}
                     Toast.makeText(this@MainActivity, "User found and deleted", Toast.LENGTH_SHORT).show()
                 } else {
                     Toast.makeText(this@MainActivity, "No user found", Toast.LENGTH_SHORT).show()
