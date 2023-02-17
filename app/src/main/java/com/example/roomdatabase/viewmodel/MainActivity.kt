@@ -39,7 +39,6 @@ class MainActivity : AppCompatActivity() {
         }
 
         viewModel = ViewModelProvider(this).get(UserViewModel::class.java)
-
         viewModel.getAllUsersObservers().observe(this) {
             recyclerViewAdapter.setListData(ArrayList(it))
             recyclerViewAdapter.notifyDataSetChanged()
