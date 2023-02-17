@@ -22,13 +22,15 @@ interface EmployeeDao {
     @Delete
     fun delete(employee: Employee):Int
 
+    @Query("UPDATE employee_table SET name = :name WHERE employeeId =:empId")
+    fun updateInfo(name:String,empId: Int)
+
     @Query("DELETE FROM employee_table WHERE employeeId = :empId")
     fun deleteWhenId(empId:Int ):Int
 
     @Query("DELETE FROM employee_table")
     fun deleteAll()
 
-    @Query("UPDATE employee_table SET name = :name WHERE employeeId =:empId")
-    fun updateInfo(name:String,empId: Int)
+
 
 }

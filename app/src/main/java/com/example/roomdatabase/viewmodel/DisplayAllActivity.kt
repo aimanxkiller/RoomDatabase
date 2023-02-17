@@ -1,13 +1,13 @@
 package com.example.roomdatabase.viewmodel
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.roomdatabase.AppDatabase
-import com.example.roomdatabase.model.Employee
 import com.example.roomdatabase.adapter.MyAdapter
 import com.example.roomdatabase.databinding.ActivityDisplayAllBinding
+import com.example.roomdatabase.model.Employee
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
@@ -18,6 +18,8 @@ class DisplayAllActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDisplayAllBinding
     private lateinit var data:ArrayList<Employee>
 
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityDisplayAllBinding.inflate(layoutInflater)
@@ -25,6 +27,7 @@ class DisplayAllActivity : AppCompatActivity() {
 
         getDatabase()
         setViews()
+
     }
 
     private fun getDatabase(){
