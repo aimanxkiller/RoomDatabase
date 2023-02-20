@@ -4,8 +4,8 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.room.Room
-import com.example.roomdatabase.AppDatabase
-import com.example.roomdatabase.EmployeeDao
+import com.example.roomdatabase.database.AppDatabase
+import com.example.roomdatabase.database.EmployeeDao
 import com.example.roomdatabase.model.Employee
 
 
@@ -44,6 +44,7 @@ class UserViewModel(application: Application):AndroidViewModel(application) {
 
     fun insertUser(entity: Employee){
         val userDao = AppDatabase.getDatabase(getApplication()).employeeDao()
+        userDao.findById(1)
         userDao.insert(entity)
         getAllData()
     }

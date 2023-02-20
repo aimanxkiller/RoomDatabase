@@ -30,7 +30,6 @@ class RecyclerLiveViewAdapter :RecyclerView.Adapter<RecyclerLiveViewAdapter.MyVi
     }
 
     class MyViewHolder(view: View):RecyclerView.ViewHolder(view) {
-
         val name: TextView = itemView.findViewById(R.id.textView1)
         private val department: TextView = itemView.findViewById(R.id.textView2)
         private val empId: TextView = itemView.findViewById(R.id.textView3)

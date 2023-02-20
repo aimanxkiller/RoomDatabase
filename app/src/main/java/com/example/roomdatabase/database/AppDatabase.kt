@@ -1,4 +1,4 @@
-package com.example.roomdatabase
+package com.example.roomdatabase.database
 
 import android.content.Context
 import androidx.room.Database
@@ -10,13 +10,13 @@ import com.example.roomdatabase.model.Employee
 @Database(entities = [Employee::class], version = 1)
 abstract class AppDatabase:RoomDatabase()
 {
-    abstract fun employeeDao():EmployeeDao
+    abstract fun employeeDao(): EmployeeDao
 
     companion object{
         @Volatile
-        private var INSTANCE:AppDatabase? = null
+        private var INSTANCE: AppDatabase? = null
 
-        fun getDatabase(context: Context):AppDatabase{
+        fun getDatabase(context: Context): AppDatabase {
             val tempInstance= INSTANCE
 
             if(tempInstance!=null){
@@ -29,7 +29,7 @@ abstract class AppDatabase:RoomDatabase()
                     "app_database")
                     .allowMainThreadQueries()
                     .build()
-                INSTANCE=instance
+                INSTANCE =instance
                 return instance
             }
         }

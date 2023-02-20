@@ -1,17 +1,18 @@
-package com.example.roomdatabase.viewmodel
+package com.example.roomdatabase.ui
 
 import android.annotation.SuppressLint
-import android.content.Intent
+import android.content.Context
 import android.os.Bundle
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.roomdatabase.adapter.RecyclerLiveViewAdapter
 import com.example.roomdatabase.databinding.ActivityMainBinding
 import com.example.roomdatabase.model.Employee
+import com.example.roomdatabase.viewmodel.UserViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
@@ -22,15 +23,16 @@ class MainActivity : AppCompatActivity() {
     //private lateinit var appDb: AppDatabase
 
     lateinit var recyclerViewAdapter:RecyclerLiveViewAdapter
-    lateinit var viewModel:UserViewModel
+    lateinit var viewModel: UserViewModel
+    private lateinit var imm:InputMethodManager
 
     @SuppressLint("NotifyDataSetChanged")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
 
-        //getDatabase()
         buttonSettings()
 
         binding.recyclerMain.apply {
@@ -39,8 +41,7 @@ class MainActivity : AppCompatActivity() {
             adapter = recyclerViewAdapter
         }
 
-        ViewModelProvider.Factory
-        viewModel = ViewModelProvider(this).get(UserViewModel::class.java)
+        viewModel = ViewModelProvider(this,ViewModelProvider.AndroidViewModelFactory(application))[UserViewModel::class.java]
 
         viewModel.getAllUsersObservers().observe(this) {
             recyclerViewAdapter.setListData(ArrayList(it))
@@ -52,10 +53,6 @@ class MainActivity : AppCompatActivity() {
     private fun buttonSettings(){
         binding.mainButton1.setOnClickListener {
             saveLive()
-        }
-        binding.mainButton2.setOnClickListener {
-            val intent = Intent(this, DisplayAllActivity::class.java)
-            startActivity(intent)
         }
         binding.buttonDelete.setOnClickListener {
             deleteLive()
@@ -77,9 +74,20 @@ class MainActivity : AppCompatActivity() {
                 binding.editTextName.text.clear()
                 binding.editTextDepartment.text.clear()
                 binding.editTextTextId.text.clear()
+                clearFocus()
+                imm.hideSoftInputFromWindow(binding.editTextDepartment.windowToken, 0)
             }
         }else{
             Toast.makeText(this@MainActivity,"Please Fill All Data",Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun clearFocus(){
+        binding.root.apply {
+            val views = touchables
+            for (view in views){
+                view.clearFocus()
+            }
         }
     }
 
@@ -98,6 +106,9 @@ class MainActivity : AppCompatActivity() {
         }else{
             Toast.makeText(this@MainActivity,"Please Insert User EmpID",Toast.LENGTH_SHORT).show()
         }
+        binding.textViewDelete.text.clear()
+        binding.textViewDelete.clearFocus()
+        imm.hideSoftInputFromWindow(binding.editTextDepartment.windowToken, 0)
     }
 
     /* Old inset,get database and delete
