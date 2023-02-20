@@ -75,7 +75,6 @@ class MainActivity : AppCompatActivity() {
                 binding.editTextDepartment.text.clear()
                 binding.editTextTextId.text.clear()
                 clearFocus()
-                imm.hideSoftInputFromWindow(binding.editTextDepartment.windowToken, 0)
             }
         }else{
             Toast.makeText(this@MainActivity,"Please Fill All Data",Toast.LENGTH_SHORT).show()
@@ -88,6 +87,7 @@ class MainActivity : AppCompatActivity() {
             for (view in views){
                 view.clearFocus()
             }
+            imm.hideSoftInputFromWindow(binding.editTextDepartment.windowToken, 0)
         }
     }
 
@@ -108,7 +108,6 @@ class MainActivity : AppCompatActivity() {
         }
         binding.textViewDelete.text.clear()
         binding.textViewDelete.clearFocus()
-        imm.hideSoftInputFromWindow(binding.editTextDepartment.windowToken, 0)
     }
 
     /* Old inset,get database and delete
@@ -154,5 +153,4 @@ class MainActivity : AppCompatActivity() {
         }
     }
     */
-
 }
