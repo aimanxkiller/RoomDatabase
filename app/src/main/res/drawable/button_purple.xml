@@ -8,7 +8,7 @@
                 android:bottom="15dp"
                 />
             <solid android:color="@color/purple_700"/>
-            <corners android:radius="10px"/>
+            <corners android:radius="10dp"/>
         </shape>
     </item>
 </layer-list>

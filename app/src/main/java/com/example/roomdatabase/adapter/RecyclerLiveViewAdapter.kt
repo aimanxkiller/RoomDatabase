@@ -1,9 +1,11 @@
 package com.example.roomdatabase.adapter
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.roomdatabase.R
 import com.example.roomdatabase.model.Employee
@@ -22,6 +24,13 @@ class RecyclerLiveViewAdapter :RecyclerView.Adapter<RecyclerLiveViewAdapter.MyVi
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
+
+        val x = holder.itemView
+
+        holder.itemView.setBackgroundResource(R.drawable.border2)
+
+        holder.name.setTextColor(ContextCompat.getColor(x.context,R.color.purple_700))
+
         holder.bind(items[position])
     }
 
@@ -30,6 +39,7 @@ class RecyclerLiveViewAdapter :RecyclerView.Adapter<RecyclerLiveViewAdapter.MyVi
     }
 
     class MyViewHolder(view: View):RecyclerView.ViewHolder(view) {
+
         val name: TextView = itemView.findViewById(R.id.textView1)
         private val department: TextView = itemView.findViewById(R.id.textView2)
         private val empId: TextView = itemView.findViewById(R.id.textView3)

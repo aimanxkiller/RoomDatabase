@@ -38,13 +38,11 @@ class UserViewModel(application: Application):AndroidViewModel(application) {
     private fun getAllData(){
         val userDao = AppDatabase.getDatabase(getApplication()).employeeDao()
         val list = userDao.getAll()
-
         allUsers.postValue(list)
     }
 
     fun insertUser(entity: Employee){
         val userDao = AppDatabase.getDatabase(getApplication()).employeeDao()
-        userDao.findById(1)
         userDao.insert(entity)
         getAllData()
     }
