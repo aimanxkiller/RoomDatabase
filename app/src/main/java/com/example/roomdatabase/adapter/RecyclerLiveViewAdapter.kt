@@ -25,15 +25,6 @@ class RecyclerLiveViewAdapter :RecyclerView.Adapter<RecyclerLiveViewAdapter.MyVi
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
 
-        val x = holder.itemView
-        //checking pos value
-        if(position%2==0) {
-            //changing backgrounds
-            holder.itemView.setBackgroundResource(R.drawable.border2)
-            //changing colors of text
-            holder.name.setTextColor(ContextCompat.getColor(x.context, R.color.purple_700))
-        }
-
         //setting values
         holder.bind(items[position])
     }

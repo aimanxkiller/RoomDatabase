@@ -6,14 +6,15 @@ import android.os.Bundle
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.roomdatabase.adapter.RecyclerLiveViewAdapter
+import com.example.roomdatabase.database.AppDatabase
 import com.example.roomdatabase.databinding.ActivityMainBinding
 import com.example.roomdatabase.model.Employee
 import com.example.roomdatabase.viewmodel.UserViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
@@ -25,6 +26,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var recyclerViewAdapter:RecyclerLiveViewAdapter
     lateinit var viewModel: UserViewModel
     private lateinit var imm:InputMethodManager
+    // create roomDB instance here and pass to viewmodel by view model constructor/factory
 
     @SuppressLint("NotifyDataSetChanged")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,11 +43,20 @@ class MainActivity : AppCompatActivity() {
             adapter = recyclerViewAdapter
         }
 
-        viewModel = ViewModelProvider(this,ViewModelProvider.AndroidViewModelFactory(application))[UserViewModel::class.java]
+        //updated to initiate database in main
+        GlobalScope.launch(Dispatchers.Main){
+            val a = async {
+                return@async AppDatabase.getDatabase(this@MainActivity)
+            }
+            val userDao = a.await().employeeDao()
 
-        viewModel.getAllUsersObservers().observe(this) {
-            recyclerViewAdapter.setListData(ArrayList(it))
-            recyclerViewAdapter.notifyDataSetChanged()
+            //passed database instance to viewmodel here
+            viewModel = UserViewModel(userDao,application)
+
+            viewModel.getAllUsersObservers().observe(this@MainActivity) {
+                recyclerViewAdapter.setListData(ArrayList(it))
+                recyclerViewAdapter.notifyDataSetChanged()
+            }
         }
 
     }
