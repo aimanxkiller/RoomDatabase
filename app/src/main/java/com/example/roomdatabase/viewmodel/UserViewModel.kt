@@ -1,17 +1,17 @@
 package com.example.roomdatabase.viewmodel
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import com.example.roomdatabase.database.AppDatabase
 import com.example.roomdatabase.database.EmployeeDao
 import com.example.roomdatabase.model.Employee
 
 
 //Android ROOM Database | ViewModel, LiveData, RecyclerView Tutorial using Kotlin
 //LeaningWorld
-class UserViewModel(passedDao:EmployeeDao, application: Application):AndroidViewModel(application) {
+class UserViewModel(passedDatabase: AppDatabase):ViewModel() {
 
-    private val userDao : EmployeeDao = passedDao
+    private val userDao : EmployeeDao = passedDatabase.employeeDao()
 
     private var allUsers : MutableLiveData<List<Employee>> = MutableLiveData()
 

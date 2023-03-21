@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.roomdatabase.adapter.RecyclerLiveViewAdapter
@@ -13,6 +14,7 @@ import com.example.roomdatabase.database.AppDatabase
 import com.example.roomdatabase.databinding.ActivityMainBinding
 import com.example.roomdatabase.model.Employee
 import com.example.roomdatabase.viewmodel.UserViewModel
+import com.example.roomdatabase.viewmodel.UserViewModelFactory
 import kotlinx.coroutines.*
 
 class MainActivity : AppCompatActivity() {
@@ -42,10 +44,10 @@ class MainActivity : AppCompatActivity() {
             val a = async {
                 return@async AppDatabase.getDatabase(this@MainActivity)
             }
-            val userDao = a.await().employeeDao()
 
-            //passed database instance to viewmodel here
-            viewModel = UserViewModel(userDao,application)
+            //passed database instance to viewmodel here via factory
+            val factory = UserViewModelFactory(a.await())
+            viewModel = ViewModelProvider(this@MainActivity,factory)[UserViewModel::class.java]
             viewModel.getAllUsersObservers().observe(this@MainActivity) {
                 recyclerViewAdapter.setListData(ArrayList(it))
                 recyclerViewAdapter.notifyDataSetChanged()
