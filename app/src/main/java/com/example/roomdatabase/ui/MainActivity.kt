@@ -13,20 +13,14 @@ import com.example.roomdatabase.database.AppDatabase
 import com.example.roomdatabase.databinding.ActivityMainBinding
 import com.example.roomdatabase.model.Employee
 import com.example.roomdatabase.viewmodel.UserViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-    //private late-init var appDb: AppDatabase
-
     private lateinit var recyclerViewAdapter:RecyclerLiveViewAdapter
     private lateinit var viewModel: UserViewModel
     private lateinit var imm:InputMethodManager
-    // create roomDB instance here and pass to viewmodel by view model constructor/factory
 
     @SuppressLint("NotifyDataSetChanged")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -52,13 +46,11 @@ class MainActivity : AppCompatActivity() {
 
             //passed database instance to viewmodel here
             viewModel = UserViewModel(userDao,application)
-
             viewModel.getAllUsersObservers().observe(this@MainActivity) {
                 recyclerViewAdapter.setListData(ArrayList(it))
                 recyclerViewAdapter.notifyDataSetChanged()
             }
         }
-
     }
 
     private fun buttonSettings(){
@@ -92,6 +84,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    //Assist to clear focus
     private fun clearFocus(){
         binding.root.apply {
             val views = touchables
@@ -121,7 +114,7 @@ class MainActivity : AppCompatActivity() {
         binding.textViewDelete.clearFocus()
     }
 
-    /* Old inset,get database and delete
+    /* Old inset,get database and delete not using
     private fun deleteData(){
         val id:String = binding.textViewDelete.text.toString()
         if (id.isNotEmpty()){
