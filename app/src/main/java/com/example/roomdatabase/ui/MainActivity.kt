@@ -21,10 +21,10 @@ import kotlinx.coroutines.launch
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-    //private lateinit var appDb: AppDatabase
+    //private late-init var appDb: AppDatabase
 
-    lateinit var recyclerViewAdapter:RecyclerLiveViewAdapter
-    lateinit var viewModel: UserViewModel
+    private lateinit var recyclerViewAdapter:RecyclerLiveViewAdapter
+    private lateinit var viewModel: UserViewModel
     private lateinit var imm:InputMethodManager
     // create roomDB instance here and pass to viewmodel by view model constructor/factory
 
@@ -160,7 +160,7 @@ class MainActivity : AppCompatActivity() {
 
             Toast.makeText(this@MainActivity,"Inserted Data",Toast.LENGTH_SHORT).show()
         }else{
-            Toast.makeText(this@MainActivity,"Plase Fill All Data",Toast.LENGTH_SHORT).show()
+            Toast.makeText(this@MainActivity,"Please Fill All Data",Toast.LENGTH_SHORT).show()
         }
     }
     */
