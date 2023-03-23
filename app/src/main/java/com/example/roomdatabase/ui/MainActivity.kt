@@ -40,8 +40,6 @@ class MainActivity : AppCompatActivity() {
             adapter = recyclerViewAdapter
         }
 
-
-
         //updated to use Hilt injection for database
         lifecycleScope.launch(Dispatchers.Main){
             viewModel = ViewModelProvider(this@MainActivity)[UserViewModel::class.java]
@@ -115,47 +113,4 @@ class MainActivity : AppCompatActivity() {
         binding.textViewDelete.clearFocus()
     }
 
-    /* Old inset,get database and delete not using
-    private fun deleteData(){
-        val id:String = binding.textViewDelete.text.toString()
-        if (id.isNotEmpty()){
-            lifecycleScope.launch(Dispatchers.IO){
-                appDb.employeeDao().deleteWhenId(id.toInt())
-            }
-            binding.textViewDelete.text.clear()
-        }else{
-            Toast.makeText(this,"Please enter ID",Toast.LENGTH_SHORT).show()
-        }
-    }
-
-    private fun getDatabase(){
-        lifecycleScope.launch(Dispatchers.IO){
-            appDb= AppDatabase.getDatabase(this@MainActivity)
-            appDb.employeeDao().getAll()
-        }
-    }
-
-    private fun writeData(){
-        val name = binding.editTextName.text.toString()
-        val department = binding.editTextDepartment.text.toString()
-        val id = binding.editTextTextId.text.toString()
-
-        if (name.isNotEmpty()&&department.isNotEmpty()&&id.isNotEmpty()){
-            val employee = Employee(
-                null,name,department,id.toInt()
-            )
-            lifecycleScope.launch(Dispatchers.IO){
-                appDb.employeeDao().insert(employee)
-            }
-
-            binding.editTextName.text.clear()
-            binding.editTextDepartment.text.clear()
-            binding.editTextTextId.text.clear()
-
-            Toast.makeText(this@MainActivity,"Inserted Data",Toast.LENGTH_SHORT).show()
-        }else{
-            Toast.makeText(this@MainActivity,"Please Fill All Data",Toast.LENGTH_SHORT).show()
-        }
-    }
-    */
 }
