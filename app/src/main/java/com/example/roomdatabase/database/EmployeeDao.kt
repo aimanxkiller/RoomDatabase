@@ -31,6 +31,4 @@ interface EmployeeDao {
     @Query("DELETE FROM employee_table")
     fun deleteAll()
 
-
-
 }

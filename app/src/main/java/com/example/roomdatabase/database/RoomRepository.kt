@@ -12,4 +12,16 @@ class RoomRepository @Inject constructor(private val appDao:EmployeeDao) {
     fun insertData(emp :Employee){
         appDao.insert(emp)
     }
+
+    fun deleteData(emp: Employee) {
+        appDao.delete(emp)
+    }
+
+    fun findById(empId: Int): Employee {
+        return appDao.findById(empId)
+    }
+
+    fun delete(entity: Employee) {
+        appDao.delete(entity)
+    }
 }

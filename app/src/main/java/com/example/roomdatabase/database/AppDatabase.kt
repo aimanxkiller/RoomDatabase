@@ -5,6 +5,8 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.roomdatabase.model.Employee
+import javax.inject.Inject
+
 import dagger.Provides
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Singleton
@@ -30,6 +32,7 @@ abstract class AppDatabase:RoomDatabase()
                     context.applicationContext,
                     AppDatabase::class.java,
                     "app_database")
+                    .allowMainThreadQueries()
                     .build()
                 INSTANCE =instance
                 return instance

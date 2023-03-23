@@ -5,15 +5,12 @@ import android.content.Context
 import android.os.Bundle
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
-import androidx.annotation.AnimRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.roomdatabase.adapter.RecyclerLiveViewAdapter
-import com.example.roomdatabase.database.AppDatabase
 import com.example.roomdatabase.databinding.ActivityMainBinding
 import com.example.roomdatabase.model.Employee
 import com.example.roomdatabase.viewmodel.UserViewModel
@@ -27,8 +24,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var recyclerViewAdapter:RecyclerLiveViewAdapter
     private lateinit var viewModel: UserViewModel
     private lateinit var imm:InputMethodManager
-
-
 
     @SuppressLint("NotifyDataSetChanged")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,36 +40,18 @@ class MainActivity : AppCompatActivity() {
             adapter = recyclerViewAdapter
         }
 
-        //updated to initiate database in main
+
+
+        //updated to use Hilt injection for database
         lifecycleScope.launch(Dispatchers.Main){
-            val a = async {
-                return@async AppDatabase.getAppDB(this@MainActivity)
-            }
-
             viewModel = ViewModelProvider(this@MainActivity)[UserViewModel::class.java]
-            viewModel.getAllUsersObservers().observe(this@MainActivity,object : Observer<List<Employee>>{
-                override fun onChanged(value: List<Employee>) {
-                    recyclerViewAdapter.setListData(ArrayList(value))
-                    recyclerViewAdapter.notifyDataSetChanged()
-                }
 
-            })
-            /*
-            viewModel = ViewModelProvider(this@MainActivity,UserViewModelFactory(a.await()))[UserViewModel::class.java]
-            viewModel.getAllUsersObservers().observe(this@MainActivity) {
+            viewModel.getAllUsersObservers().observe(this@MainActivity){
                 recyclerViewAdapter.setListData(ArrayList(it))
                 recyclerViewAdapter.notifyDataSetChanged()
             }
-
-
-            //passed database instance to viewmodel here
-            viewModel = UserViewModel(userDao)
-            viewModel.getAllUsersObservers().observe(this@MainActivity) {
-                recyclerViewAdapter.setListData(ArrayList(it))
-                recyclerViewAdapter.notifyDataSetChanged()
-            }
-             */
         }
+
     }
 
     private fun buttonSettings(){
@@ -82,7 +59,7 @@ class MainActivity : AppCompatActivity() {
             saveLive()
         }
         binding.buttonDelete.setOnClickListener {
-//            deleteLive()
+            deleteLive()
         }
     }
 
@@ -118,7 +95,7 @@ class MainActivity : AppCompatActivity() {
             imm.hideSoftInputFromWindow(binding.editTextDepartment.windowToken, 0)
         }
     }
-/*
+
     private fun deleteLive(){
         val id = binding.textViewDelete.text.toString()
         if (id.isNotEmpty()) {
@@ -137,7 +114,6 @@ class MainActivity : AppCompatActivity() {
         binding.textViewDelete.text.clear()
         binding.textViewDelete.clearFocus()
     }
-*/
 
     /* Old inset,get database and delete not using
     private fun deleteData(){
