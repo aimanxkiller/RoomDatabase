@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
@@ -15,7 +14,9 @@ import com.example.roomdatabase.databinding.ActivityMainBinding
 import com.example.roomdatabase.model.Employee
 import com.example.roomdatabase.viewmodel.UserViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -43,7 +44,6 @@ class MainActivity : AppCompatActivity() {
         //updated to use Hilt injection for database
         lifecycleScope.launch(Dispatchers.Main){
             viewModel = ViewModelProvider(this@MainActivity)[UserViewModel::class.java]
-
             viewModel.getAllUsersObservers().observe(this@MainActivity){
                 recyclerViewAdapter.setListData(ArrayList(it))
                 recyclerViewAdapter.notifyDataSetChanged()
@@ -69,9 +69,7 @@ class MainActivity : AppCompatActivity() {
         if (name.isNotEmpty()&&department.isNotEmpty()&&id.isNotEmpty()){
             lifecycleScope.launch(Dispatchers.Main) {
                 val newData = Employee(null, name, department, id.toInt())
-                async {
-                    viewModel.insertRepo(newData)
-                }
+                viewModel.insertRepo(newData)
                 Toast.makeText(this@MainActivity, "New Data Added", Toast.LENGTH_SHORT).show()
                 binding.editTextName.text.clear()
                 binding.editTextDepartment.text.clear()
@@ -100,7 +98,7 @@ class MainActivity : AppCompatActivity() {
             lifecycleScope.launch(Dispatchers.Main){
                 val toDelete = async{ viewModel.getUserByID(id.toInt()) }
                 if (toDelete.await() != null) {
-                    async {  viewModel.deleteUser(toDelete.await())}
+                    viewModel.deleteUser(toDelete.await())
                     Toast.makeText(this@MainActivity, "User found and deleted", Toast.LENGTH_SHORT).show()
                 } else {
                     Toast.makeText(this@MainActivity, "No user found", Toast.LENGTH_SHORT).show()

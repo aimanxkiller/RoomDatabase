@@ -15,11 +15,9 @@ class UserViewModel @Inject constructor(
     private val repository: RoomRepository)
     : ViewModel() {
 
-//    private val userDao : EmployeeDao = database.employeeDao()
-    var allUsers : MutableLiveData<List<Employee>>
+    private var allUsers : MutableLiveData<List<Employee>> = MutableLiveData()
 
     init {
-        allUsers = MutableLiveData()
         loadRepository()
     }
 
@@ -37,12 +35,6 @@ class UserViewModel @Inject constructor(
         loadRepository()
     }
 
-//    //inserting new data to database
-//    fun insertUser(entity: Employee){
-//        userDao.insert(entity)
-//        getAllData()
-//    }
-//    //finding specific data from database
     fun getUserByID(empId : Int): Employee {
         return repository.findById(empId)
     }
