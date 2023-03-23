@@ -37,15 +37,6 @@ class UserViewModel @Inject constructor(
         loadRepository()
     }
 
-    fun deleteRepo(emp: Employee){
-        repository.deleteData(emp)
-        loadRepository()
-    }
-//    //getting all data
-//    private fun getAllData(){
-//        val list = userDao.getAll()
-//        allUsers.postValue(list)
-//    }
 //    //inserting new data to database
 //    fun insertUser(entity: Employee){
 //        userDao.insert(entity)
