@@ -23,7 +23,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var recyclerViewAdapter:RecyclerLiveViewAdapter
-    private lateinit var viewModel: UserViewModel
+    private  val viewModel: UserViewModel = ViewModelProvider(this@MainActivity)[UserViewModel::class.java]
     private lateinit var imm:InputMethodManager
 
     @SuppressLint("NotifyDataSetChanged")
@@ -42,13 +42,11 @@ class MainActivity : AppCompatActivity() {
         }
 
         //updated to use Hilt injection for database
-        lifecycleScope.launch(Dispatchers.Main){
-            viewModel = ViewModelProvider(this@MainActivity)[UserViewModel::class.java]
             viewModel.getAllUsersObservers().observe(this@MainActivity){
                 recyclerViewAdapter.setListData(ArrayList(it))
                 recyclerViewAdapter.notifyDataSetChanged()
             }
-        }
+
 
     }
 
@@ -87,6 +85,7 @@ class MainActivity : AppCompatActivity() {
             val views = touchables
             for (view in views){
                 view.clearFocus()
+
             }
             imm.hideSoftInputFromWindow(binding.editTextDepartment.windowToken, 0)
         }
