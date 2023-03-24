@@ -5,8 +5,8 @@ import android.content.Context
 import android.os.Bundle
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.roomdatabase.adapter.RecyclerLiveViewAdapter
@@ -18,13 +18,14 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
+
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var recyclerViewAdapter:RecyclerLiveViewAdapter
-    private  val viewModel: UserViewModel = ViewModelProvider(this@MainActivity)[UserViewModel::class.java]
     private lateinit var imm:InputMethodManager
+    private val viewModel: UserViewModel by viewModels()
 
     @SuppressLint("NotifyDataSetChanged")
     override fun onCreate(savedInstanceState: Bundle?) {
