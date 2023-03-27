@@ -48,7 +48,6 @@ class MainActivity : AppCompatActivity() {
                 recyclerViewAdapter.notifyDataSetChanged()
             }
 
-
     }
 
     private fun buttonSettings(){
